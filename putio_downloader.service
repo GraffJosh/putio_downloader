@@ -3,10 +3,11 @@ Description=PutIO Downloader Service
 After=multi-user.target
 [Service]
 Type=simple
-User=dietpi
+User=joshgraff
 ExecStartPre=/bin/sleep 30
 Environment="PYTHONPATH=$PYTHONPATH:/home/dietpi/.local/lib/python3.9/site-packages"
 Restart=always
-ExecStart=/usr/bin/python3 /home/dietpi/dev/putio_webdav.py
+RestartSec=5
+ExecStart=/usr/bin/python3 ~/dev/putio_downloader/putio_webdav.py
 [Install]
 WantedBy=multi-user.target

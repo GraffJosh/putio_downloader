@@ -6,7 +6,7 @@ import easywebdav
 import os
 import sys
 import time
-root_download_folder = "/mnt/ssd1"
+root_download_folder = "~/media"
 remote_root_directory = "/JPG/Box"
 watch_folders = ['TV','Movies','Applications']
 min_file_size = 20
