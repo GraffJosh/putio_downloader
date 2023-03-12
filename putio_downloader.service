@@ -5,9 +5,9 @@ After=multi-user.target
 Type=simple
 User=joshgraff
 ExecStartPre=/bin/sleep 30
-Environment="PYTHONPATH=$PYTHONPATH:/home/dietpi/.local/lib/python3.9/site-packages"
+Environment="PYTHONPATH=$PYTHONPATH:/home/dietpi/.local/lib/python3.10/site-packages"
 Restart=always
 RestartSec=5
-ExecStart=/usr/bin/python3 ~/dev/putio_downloader/putio_webdav.py
+ExecStart=/usr/bin/python3 /home/joshgraff/dev/putio_downloader/putio_webdav.py
 [Install]
 WantedBy=multi-user.target
