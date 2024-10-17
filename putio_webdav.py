@@ -6,10 +6,11 @@ import easywebdav
 import os
 import sys
 import time
+from datetime import datetime
 root_download_folder = "/home/joshgraff/media"
 remote_root_directory = "/JPG/Box"
-watch_folders = ['TV','Movies','Applications']
-permissions_mask = 0o750
+watch_folders = ['TV','Movies','Applications','Music']
+permissions_mask = 0o755
 min_file_size = 20
 scan_delay_time = 60
 download_failures = 0
@@ -38,6 +39,9 @@ def download_recurse(webdav:easywebdav, dir_name:str,root_download_folder:str):
   #                  print("new dir: ",local_dir_name)
                     os.makedirs(local_dir_name)
                     os.chmod(local_dir_name,permissions_mask)
+                now = datetime.now()
+                dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+                print("Downloading ", file.name," at: ",dt_string)
                 webdav.download(file.name,local_dir_name+filename) # download it into the right directory
                 os.chmod(local_dir_name+filename,permissions_mask)
                 local_file_size = os.path.getsize(local_dir_name+filename) #validate that the sizes match? Maybe do a checksum someday?
