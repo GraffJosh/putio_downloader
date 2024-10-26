@@ -1,6 +1,6 @@
 [Unit]
 Description=PutIO Downloader Service
-After=multi-user.target
+After=network-online.target
 [Service]
 Type=simple
 User=joshgraff
@@ -9,6 +9,6 @@ Environment="PYTHONPATH=$PYTHONPATH:/home/dietpi/.local/lib/python3.10/site-pack
 Restart=always
 RuntimeMaxSec=2d
 RestartSec=5
-ExecStart=/usr/bin/python3 /home/joshgraff/dev/putio_downloader/putio_webdav.py
+ExecStart=/home/joshgraff/dev/putio_downloader/.venv/bin/python3 /home/joshgraff/dev/putio_downloader/putio_webdav.py
 [Install]
 WantedBy=multi-user.target

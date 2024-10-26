@@ -9,7 +9,7 @@ import time
 from datetime import datetime
 root_download_folder = "/home/joshgraff/media"
 remote_root_directory = "/JPG/Box"
-watch_folders = ['TV','Movies','Applications','Music']
+watch_folders = ['tv','movies','applications','music']
 permissions_mask = 0o755
 min_file_size = 20
 scan_delay_time = 60
