@@ -7,10 +7,13 @@ import os
 import sys
 import time
 from datetime import datetime
-root_download_folder = "/home/joshgraff/media"
-remote_root_directory = "/JPG/Box"
+import urllib
+root_download_folder = "/home/joshgraff/media/"
+remote_root_directory = "/JPG/Box/"
 watch_folders = ['tv','movies','applications','music']
 permissions_mask = 0o755
+PLEX_UID = 999
+PLEX_GID = 990
 min_file_size = 20
 scan_delay_time = 60
 download_failures = 0
@@ -35,13 +38,15 @@ def download_recurse(webdav:easywebdav, dir_name:str,root_download_folder:str):
                 download_failures = download_failures + 1             #we count up for failures.
                 filename = file.name.split("/")[-1]                 #get the name of the file
                 local_dir_name = root_download_folder+dir_name.replace(remote_root_directory,"")
+                local_dir_name = urllib.parse.unquote(local_dir_name, encoding='utf-8', errors='replace')
                 if not os.path.exists(local_dir_name):#if we're making a directory
   #                  print("new dir: ",local_dir_name)
                     os.makedirs(local_dir_name)
+                    os.chown(local_dir_name,PLEX_UID,PLEX_GID)
                     os.chmod(local_dir_name,permissions_mask)
                 now = datetime.now()
                 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-                print("Downloading ", file.name," at: ",dt_string)
+                print("Downloading ", file.name," at: ",dt_string, " to ",local_dir_name+filename)
                 webdav.download(file.name,local_dir_name+filename) # download it into the right directory
                 os.chmod(local_dir_name+filename,permissions_mask)
                 local_file_size = os.path.getsize(local_dir_name+filename) #validate that the sizes match? Maybe do a checksum someday?
@@ -59,7 +64,7 @@ while webdav:
 #    print(webdav.ls('/JPG/Box'))
     sys.stdout.flush()
     for dir in watch_folders:
-        download_failures = download_recurse(webdav, "/JPG/Box/"+dir,root_download_folder)
+        download_failures = download_recurse(webdav, remote_root_directory+dir,root_download_folder)
     if download_failures > max_download_retries:
         break
     time.sleep(scan_delay_time)
